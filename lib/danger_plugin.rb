@@ -70,7 +70,7 @@ module Danger
           end
         end
 
-        \markdown message
+        markdown message
       end
 
       # Determine if proselint is currently installed in the system paths.
