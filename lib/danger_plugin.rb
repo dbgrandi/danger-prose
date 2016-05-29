@@ -2,7 +2,7 @@ module Danger
   class DangerPlugin
       class Proselint < Plugin
 
-        def self.plugin_instance
+        def self.plugin_instance(dangerfile)
           DangerProselint.new(dangerfile)
         end
 
