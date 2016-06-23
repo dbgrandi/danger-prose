@@ -33,8 +33,8 @@ module Danger
       # Installs a prose checker if needed
       system "pip install --user proselint" unless proselint_installed?
 
-      # Check that this is in the user's PATH
-      if `which proselint`.strip.empty?
+      # Check that this is in the user's PATH after installing
+      unless proselint_installed?
         fail "proselint is not in the user's PATH, or it failed to install"
         return
       end
@@ -78,7 +78,7 @@ module Danger
     # @return  [Bool]
     #
     def proselint_installed?
-      `which proselint`.strip.empty?
+      `which proselint`.strip.empty? == false
     end
   end
 end
