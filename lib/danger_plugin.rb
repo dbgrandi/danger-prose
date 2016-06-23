@@ -72,14 +72,13 @@ module Danger
 
         markdown message
       end
-
-      # Determine if proselint is currently installed in the system paths.
-      # @return  [Bool]
-      #
-      def proselint_installed?
-        `which proselint`.strip.empty?
-      end
     end
 
+    # Determine if proselint is currently installed in the system paths.
+    # @return  [Bool]
+    #
+    def proselint_installed?
+      `which proselint`.strip.empty?
+    end
   end
 end
