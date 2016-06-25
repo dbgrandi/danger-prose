@@ -13,20 +13,21 @@ module Danger
   #          # Runs a linter with all styles, on modified and added markpown files in this PR
   #          proselint.lint_files
   #
-  # @see: artsy/artsy.github.io
-  # @tags: blogging, blog, writing, jekyll, middleman, hugo, metalsmith, gatsby, express
+  # @see  artsy/artsy.github.io
+  # @tags blogging, blog, writing, jekyll, middleman, hugo, metalsmith, gatsby, express
   #
   class DangerProselint < Plugin
 
     # Allows you to disable a collection of linters from being ran.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
-    attr_writer :disable_linters
+    attr_accessor :disable_linters
 
-    # Lints the globbed files, which can fail your build if
+    # Lints the globbed files, will only fail if `proselint` cannot be installed correctly.
+    # Generates a `markdown` list of warnings for the prose in a corpus of .markdown and .md files. 
     #
     # @param   [String] files
     #          A globbed string which should return the files that you want to lint, defaults to nil.
-    #          if nil, modified and added files will be used.
+    #          if nil, modified and added files from the diff will be used.
     # @return  [void]
     #
     def lint_files(files=nil)
