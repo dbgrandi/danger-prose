@@ -1,3 +1,3 @@
-module DangerProselint
-  VERSION = "0.0.1".freeze
+module DangerProse
+  VERSION = "1.0.0".freeze
 end
