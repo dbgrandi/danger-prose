@@ -5,7 +5,7 @@ require 'version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'danger-prose'
-  spec.version       = Prose::VERSION
+  spec.version       = DangerProse::VERSION
   spec.authors       = ['David Grandinetti', 'Orta Therox']
   spec.email         = ['dbgrandi@gmail.com', 'orta.therox@gmail.com']
   spec.description   = %q{A danger plugin for working with bodies of markdown prose.}
