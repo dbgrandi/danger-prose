@@ -16,7 +16,7 @@ module Danger
   # @see  artsy/artsy.github.io
   # @tags blogging, blog, writing, jekyll, middleman, hugo, metalsmith, gatsby, express
   #
-  class DangerProselint < Plugin
+  class DangerProse < Plugin
 
     # Allows you to disable a collection of linters from being ran.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
