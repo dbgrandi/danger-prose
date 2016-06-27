@@ -18,7 +18,7 @@ module Danger
   #
   class DangerProse < Plugin
 
-    # Allows you to disable a collection of linters from being ran.
+    # Allows you to disable a collection of linters from running. Doesn't work yet.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
     attr_accessor :disable_linters
 
