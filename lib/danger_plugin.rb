@@ -18,11 +18,11 @@ module Danger
   #
   class DangerProse < Plugin
 
-    # Allows you to disable a collection of linters from being ran.
+    # Allows you to disable a collection of linters from running. Doesn't work yet.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
     attr_accessor :disable_linters
 
-    # Lints the globbed files, will only fail if `proselint` cannot be installed correctly.
+    # Lints the globbed markdown files. Will fail if `proselint` cannot be installed correctly.
     # Generates a `markdown` list of warnings for the prose in a corpus of .markdown and .md files. 
     #
     # @param   [String] files
