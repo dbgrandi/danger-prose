@@ -1,11 +1,11 @@
 require File.expand_path('../spec_helper', __FILE__)
 
 module Danger
-  describe Prose do
+  describe DangerProse do
     it 'is a plugin' do
       expect(Danger::DangerProse < Danger::Plugin).to be_truthy
     end
-    
+
     describe 'with Dangerfile' do
       before do
         @dangerfile = testing_dangerfile
@@ -36,14 +36,14 @@ module Danger
 
           # it's worth noting - you can call anything on your plugin that a Dangerfile responds to
           # The request source's PR JSON typically looks like
-          # https://raw.githubusercontent.com/danger/danger/bffc246a11dac883d76fc6636319bd6c2acd58a3/spec/fixtures/pr_response.json 
+          # https://raw.githubusercontent.com/danger/danger/bffc246a11dac883d76fc6636319bd6c2acd58a3/spec/fixtures/pr_response.json
           @prose.env.request_source.pr_json = { "head" => { "ref" => "my_fake_branch" }}
 
           # Do it
           @prose.lint_files("spec/fixtures/*.md")
 
           output = @prose.status_report[:markdowns].first
-          
+
           # A title
           expect(output).to include("Proselint found issues")
           # A warning
@@ -55,4 +55,4 @@ module Danger
     end
   end
 end
- 
+
