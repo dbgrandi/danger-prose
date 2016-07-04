@@ -10,4 +10,4 @@ rvm:
 
 script:
     - bundle exec rake spec
-    # - bundle exec danger plugin lint
+    - bundle exec danger plugin lint

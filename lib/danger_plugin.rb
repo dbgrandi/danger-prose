@@ -146,10 +146,11 @@ module Danger
       end
     end
 
+    private
     # Creates a temporary proselint settings file
     # @return  void
     #
-    private def with_proselint_disabled(disable_linters)
+    def with_proselint_disabled(disable_linters)
       # Create the disabled linters JSON in ~/.proselintrc
       proselint_template = File.join(File.dirname(__FILE__), 'proselintrc')
       proselintJSON = JSON.parse(File.read(proselint_template))
