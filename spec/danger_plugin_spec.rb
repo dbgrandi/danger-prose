@@ -38,7 +38,7 @@ module Danger
           # The request source's PR JSON typically looks like
           # https://raw.githubusercontent.com/danger/danger/bffc246a11dac883d76fc6636319bd6c2acd58a3/spec/fixtures/pr_response.json
 
-          @prose.env.request_source.pr_json = { 'head' => { 'ref' => 'my_fake_branch' } }
+          @prose.env.request_source.pr_json = { base: { ref: 'my_fake_branch' } }
 
           # Do it
           @prose.lint_files('spec/fixtures/*.md')

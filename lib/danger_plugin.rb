@@ -20,6 +20,7 @@ module Danger
   class DangerProse < Plugin
     # Allows you to disable a collection of linters from running. Doesn't work yet.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
+    # defaults to `["misc.scare_quotes", "typography.symbols"]` when it's nil.
     attr_accessor :disable_linters
 
     # Lints the globbed markdown files. Will fail if `proselint` cannot be installed correctly.
@@ -37,28 +38,19 @@ module Danger
       # Check that this is in the user's PATH after installing
       unless proselint_installed?
         raise "proselint is not in the user's PATH, or it failed to install"
-        return
       end
 
       # Either use files provided, or use the modified + added
       markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
-      markdown_files.select! { |line| (line.end_with?('.markdown') || line.end_with?('.md')) }
+      markdown_files.select! { |line| line.end_with? '.markdown', '.md' }
 
-      # Create the disabled linters JSON in ~/.proselintrc
-      proselint_template = File.expand_path('proselintrc', __FILE__)
-      proselintJSON = JSON.parse(File.read(proselint_template))
-      disable_linters.each do |linter|
-        proselintJSON['checks'][linter] = false
+      proses = []
+      to_disable = disable_linters || ["misc.scare_quotes", "typography.symbols"]
+      with_proselint_disabled(to_disable) do
+        # Convert paths to proselint results
+        result_jsons = Hash[markdown_files.uniq.collect { |v| [v, JSON.parse(`proselint #{v} --json`.strip)] }]
+        proses = result_jsons.select { |_, prose| prose['data']['errors'].count }
       end
-      temp_proselint_rc_path = File.join(Dir.home, '.proselintrc')
-      File.write(temp_proselint_rc_path, proselintJSON.to_s)
-
-      # Convert paths to proselint results
-      result_jsons = Hash[markdown_files.uniq.collect { |v| [v, JSON.parse(`proselint #{v} --json`.strip)] }]
-      proses = result_jsons.select { |_, prose| prose['data']['errors'].count }
-
-      # Delete .proselintrc
-      File.unlink temp_proselint_rc_path
 
       # Get some metadata about the local setup
       current_slug = env.ci_source.repo_slug
@@ -87,6 +79,30 @@ module Danger
     #
     def proselint_installed?
       `which proselint`.strip.empty? == false
+    end
+
+    # Creates a temporary proselint settings file
+    # @return  void
+    #
+    private def with_proselint_disabled(disable_linters)
+      # Create the disabled linters JSON in ~/.proselintrc
+      proselint_template = File.join(File.dirname(__FILE__), 'proselintrc')
+      proselintJSON = JSON.parse(File.read(proselint_template))
+
+      # Disable individual linters
+      disable_linters.each do |linter|
+        proselintJSON['checks'][linter] = false
+      end
+
+      # Re-save the new JSON into the home dir
+      temp_proselint_rc_path = File.join(Dir.home, '.proselintrc')
+      File.write(temp_proselint_rc_path, proselintJSON.to_s)
+
+      # Run the closure
+      yield
+
+      # Delete .proselintrc
+      File.unlink temp_proselint_rc_path
     end
   end
 end
