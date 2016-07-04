@@ -19,6 +19,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'danger'
 
+  # Let's you test your plugin via the linter
+  spec.add_development_dependency "yard", '~> 0.8'
+
   # General ruby development
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake', '~> 10.0'
