@@ -33,6 +33,8 @@ module Danger
     # Allows you to disable a collection of linters from running. Doesn't work yet.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
     # defaults to `["misc.scare_quotes", "typography.symbols"]` when it's nil.
+    #
+    # @return   [Array<String>]
     attr_accessor :disable_linters
 
     # Lints the globbed markdown files. Will fail if `proselint` cannot be installed correctly.
@@ -100,6 +102,7 @@ module Danger
 
     # Allows you to add a collection of words to skip in spellchecking.
     # defaults to `[""]` when it's nil.
+    # @return [Array<String>]
     attr_accessor :ignored_words
 
     # Runs a markdown-specific spell checker, against a corpus of `.markdown` and `.md` files.
