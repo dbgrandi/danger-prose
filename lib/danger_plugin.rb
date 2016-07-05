@@ -5,14 +5,26 @@ module Danger
   # This is done using the [proselint](http://proselint.com) python egg.
   # Results are passed out as a table in markdown.
   #
-  # @example Specifying custom CocoaPods installation options
+  # @example Running linter with custom disabled linters
   #
-  #          # Runs a linter with comma style disabled
-  #          proselint.disable_linters = ["misc.scare_quotes", "misc.tense_present"]
-  #          proselint.lint_files "_posts/*.md"
+  #          # Runs a linter with comma style and tense present disabled
+  #          prose.disable_linters = ["misc.scare_quotes", "misc.tense_present"]
+  #          prose.lint_files "_posts/*.md"
+  #
+  # @example Running linter with default linters
   #
   #          # Runs a linter with all styles, on modified and added markdown files in this PR
-  #          proselint.lint_files
+  #          prose.lint_files
+  #          
+  # @example Running the spell checker
+  #
+  #          # Runs a spell checker on all files in `_post`
+  #          prose.check_spelling "_posts/*.md"
+  #
+  # @example Running the spell checker, with some words whitelisted
+  # 
+  #          prose.ignored_words = ["orta", "artsy"]
+  #          prose.lint_files
   #
   # @see  artsy/artsy.github.io
   # @tags blogging, blog, writing, jekyll, middleman, hugo, metalsmith, gatsby, express
