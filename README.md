@@ -7,21 +7,35 @@ A description of danger-proselint.
     $ gem install danger-proselint
 
 
-
 ### prose
 
 Lint markdown files inside your projects.
 This is done using the [proselint](http://proselint.com) python egg.
 Results are passed out as a table in markdown.
 
-<blockquote>Specifying custom CocoaPods installation options
+<blockquote>Running linter with custom disabled linters
   <pre>
-# Runs a linter with comma style disabled
-proselint.disable_linters = ["misc.scare_quotes", "misc.tense_present"]
-proselint.lint_files "_posts/*.md"
+# Runs a linter with comma style and tense present disabled
+prose.disable_linters = ["misc.scare_quotes", "misc.tense_present"]
+prose.lint_files "_posts/*.md"</pre>
+</blockquote>
 
+<blockquote>Running linter with default linters
+  <pre>
 # Runs a linter with all styles, on modified and added markdown files in this PR
-proselint.lint_files</pre>
+prose.lint_files</pre>
+</blockquote>
+
+<blockquote>Running the spell checker
+  <pre>
+# Runs a spell checker on all files in `_post`
+prose.check_spelling "_posts/*.md"</pre>
+</blockquote>
+
+<blockquote>Running the spell checker, with some words whitelisted
+  <pre>
+prose.ignored_words = ["orta", "artsy"]
+prose.lint_files</pre>
 </blockquote>
 
 
