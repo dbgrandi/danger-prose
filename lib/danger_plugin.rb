@@ -68,13 +68,13 @@ module Danger
 
       # We got some error reports back from proselint
       if proses.count > 0
-        message = '### Proselint found issues\n\n'
+        message = "### Proselint found issues\n\n"
         proses.each do |path, prose|
           github_loc = "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
           message << "#### [#{path}](#{github_loc})\n\n"
 
-          message << 'Line | Message | Severity |\n'
-          message << '| --- | ----- | ----- |\n'
+          message << "Line | Message | Severity |\n"
+          message << "| --- | ----- | ----- |\n"
 
           prose['data']['errors'].each do |error|
             message << "#{error['line']} | #{error['message']} | #{error['severity']}\n"
