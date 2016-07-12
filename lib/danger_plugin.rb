@@ -173,7 +173,7 @@ module Danger
 
       # Re-save the new JSON into the home dir
       temp_proselint_rc_path = File.join(Dir.home, '.proselintrc')
-      File.write(temp_proselint_rc_path, proselintJSON.to_s)
+      File.write(temp_proselint_rc_path, JSON.pretty_generate(proselintJSON))
 
       # Run the closure
       yield
