@@ -51,7 +51,7 @@ module Danger
             # A warning
             expect(output).to include('!!! is hyperbolic. | warning')
             # A link to the file inside the fixtures dir
-            expect(output).to include('["spec/fixtures/blog_post.md"](/artsy/eigen/tree/my_fake_branch/spec/fixtures/blog_post.md)')
+            expect(output).to include('["\"spec/fixtures/blog_post.md\""](/artsy/eigen/tree/my_fake_branch/\"spec/fixtures/blog_post.md\")')
           end
         end
       end
@@ -76,7 +76,7 @@ module Danger
             proselint_response = "    spec/fixtures/blog_post.md\n        1:27 | This post intentional left blank-ish.\n        4:84 | Here's a tpyo - it should registor.\n        4:101 | Here's a tpyo - it should registor.\n\n >> 3 spelling errors found in 1 file"
 
             # This is where we generate our JSON
-            allow(@prose).to receive(:`).with('mdspell "spec/fixtures/blog_post.md" -r').and_return(proselint_response)
+            allow(@prose).to receive(:`).with('mdspell \"spec/fixtures/blog_post.md\" -r').and_return(proselint_response)
 
             # it's worth noting - you can call anything on your plugin that a Dangerfile responds to
             # The request source's PR JSON typically looks like
