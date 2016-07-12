@@ -111,7 +111,7 @@ module Danger
     #          if nil, modified and added files from the diff will be used.
     # @return  [void]
     #
-    def check_spelling(files)
+    def check_spelling(files = nil)
       # Installs my fork of the spell checker if needed
       # my fork has line numbers + indexes
       system "npm install -g orta/node-markdown-spellcheck" unless mdspell_installed?
