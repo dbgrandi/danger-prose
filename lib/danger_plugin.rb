@@ -15,14 +15,14 @@ module Danger
   #
   #          # Runs a linter with all styles, on modified and added markdown files in this PR
   #          prose.lint_files
-  #          
+  #
   # @example Running the spell checker
   #
   #          # Runs a spell checker on all files in `_post`
   #          prose.check_spelling "_posts/*.md"
   #
   # @example Running the spell checker, with some words whitelisted
-  # 
+  #
   #          prose.ignored_words = ["orta", "artsy"]
   #          prose.lint_files
   #
@@ -60,7 +60,7 @@ module Danger
       to_disable = disable_linters || ["misc.scare_quotes", "typography.symbols"]
       with_proselint_disabled(to_disable) do
         # Convert paths to proselint results
-        result_jsons = Hash[markdown_files.uniq.collect { |v| [v, JSON.parse(`proselint #{v} --json`.strip)] }]
+        result_jsons = Hash[markdown_files.uniq.collect { |v| [v, JSON.parse(`proselint "#{v}" --json`.strip)] }]
         proses = result_jsons.select { |_, prose| prose['data']['errors'].count }
       end
 
@@ -112,9 +112,9 @@ module Danger
     #          if nil, modified and added files from the diff will be used.
     # @return  [void]
     #
-    def check_spelling(files) 
+    def check_spelling(files)
       # Installs my fork of the spell checker if needed
-      # my fork has line numbers + indexes 
+      # my fork has line numbers + indexes
       system "npm install -g orta/node-markdown-spellcheck" unless mdspell_installed?
 
       # Check that this is in the user's PATH after installing
@@ -123,14 +123,12 @@ module Danger
       markdown_files = files ? Dir.glob(files) : (modified_files + added_files)
       markdown_files.select! do |line| (line.end_with?(".markdown") || line.end_with?(".md")) end
 
-      spell_issues = {}
-      Dir.mktmpdir do |dir|
-        spelling_file = File.join(dir, ".spelling")
-        skip_words = ignored_words || []
-        File.write(spelling_file, skip_words.join("\n"))
-        result_texts = Hash[markdown_files.uniq.collect { |md| [md, `mdspell #{md} -r`.strip] }]
-        spell_issues = result_texts.select { |path, output| output.include? "spelling errors found" }
-      end
+      skip_words = ignored_words || []
+      File.write(".spelling", skip_words.join("\n"))
+      result_texts = Hash[markdown_files.uniq.collect { |md| [md, `mdspell #{md} -r`.strip] }]
+      spell_issues = result_texts.select { |path, output| output.include? "spelling errors found" }
+      File.unlink(".spelling")
+
       # Get some metadata about the local setup
       current_slug = env.ci_source.repo_slug
 
@@ -184,6 +182,12 @@ module Danger
 
       # Delete .proselintrc
       File.unlink temp_proselint_rc_path
+    end
+
+    def get_files files
+      # Either use files provided, or use the modified + added
+      markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
+      markdown_files.select { |line| line.end_with? '.markdown', '.md' }
     end
   end
 end
