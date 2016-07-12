@@ -53,14 +53,13 @@ module Danger
       raise "proselint is not in the user's PATH, or it failed to install" unless proselint_installed?
 
       # Either use files provided, or use the modified + added
-      markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
-      markdown_files.select! { |line| line.end_with? '.markdown', '.md' }
+      markdown_files = get_files files
 
       proses = {}
       to_disable = disable_linters || ["misc.scare_quotes", "typography.symbols"]
       with_proselint_disabled(to_disable) do
         # Convert paths to proselint results
-        result_jsons = Hash[markdown_files.uniq.collect { |v| [v, JSON.parse(`proselint "#{v}" --json`.strip)] }]
+        result_jsons = Hash[markdown_files.uniq.collect { |v| [v, get_proselint_json(v)] }]
         proses = result_jsons.select { |_, prose| prose['data']['errors'].count }
       end
 
@@ -120,8 +119,7 @@ module Danger
       # Check that this is in the user's PATH after installing
       raise "mdspell is not in the user's PATH, or it failed to install" unless mdspell_installed?
 
-      markdown_files = files ? Dir.glob(files) : (modified_files + added_files)
-      markdown_files.select! do |line| (line.end_with?(".markdown") || line.end_with?(".md")) end
+      markdown_files = get_files files
 
       skip_words = ignored_words || []
       File.write(".spelling", skip_words.join("\n"))
@@ -188,6 +186,16 @@ module Danger
       # Either use files provided, or use the modified + added
       markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
       markdown_files.select { |line| line.end_with? '.markdown', '.md' }
+    end
+
+    # Always returns a hash, regardless of whether the command gives JSON, weird data, or no response
+    def get_proselint_json path
+      json = `proselint "#{path}" --json`.strip
+      if json[0] == "{" and json[-1] == "}"
+        JSON.parse json
+      else
+        {}
+      end
     end
   end
 end
