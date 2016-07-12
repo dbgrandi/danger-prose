@@ -56,6 +56,9 @@ module Danger
       markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
       markdown_files.select! { |line| line.end_with? '.markdown', '.md' }
 
+      # Make sure we don't fail when paths have spaces
+      markdown_files = markdown_files.map { |file| "\"#{file}\"" }
+
       proses = {}
       to_disable = disable_linters || ["misc.scare_quotes", "typography.symbols"]
       with_proselint_disabled(to_disable) do
