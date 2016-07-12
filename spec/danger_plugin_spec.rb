@@ -33,7 +33,7 @@ module Danger
             proselint_response = '{"status" : "success", "data" : { "errors" : ' + errors + '}}'
 
             # This is where we generate our JSON
-            allow(@prose).to receive(:`).with('proselint spec/fixtures/blog_post.md --json').and_return(proselint_response)
+            allow(@prose).to receive(:`).with('proselint "spec/fixtures/blog_post.md" --json').and_return(proselint_response)
 
             # it's worth noting - you can call anything on your plugin that a Dangerfile responds to
             # The request source's PR JSON typically looks like
