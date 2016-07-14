@@ -24,7 +24,7 @@ module Danger
   # @example Running the spell checker, with some words whitelisted
   #
   #          prose.ignored_words = ["orta", "artsy"]
-  #          prose.lint_files
+  #          prose.check_spelling
   #
   # @see  artsy/artsy.github.io
   # @tags blogging, blog, writing, jekyll, middleman, hugo, metalsmith, gatsby, express
