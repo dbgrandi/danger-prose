@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    danger-prose (2.0.0)
+    danger-prose (2.0.1)
       danger
 
 GEM
