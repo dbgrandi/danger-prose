@@ -6,7 +6,6 @@ A description of danger-proselint.
 
     $ gem install danger-proselint
 
-
 ### prose
 
 Lint markdown files inside your projects.
@@ -41,11 +40,11 @@ prose.lint_files</pre>
 
 
 #### Attributes
-<br>
+<tr>
 `disable_linters` - Allows you to disable a collection of linters from running. Doesn't work yet.
 You can get a list of [them here](https://github.com/amperser/proselint#checks)
 defaults to `["misc.scare_quotes", "typography.symbols"]` when it's nil.
-<br>
+<tr>
 `ignored_words` - Allows you to add a collection of words to skip in spellchecking.
 defaults to `[""]` when it's nil.
 
@@ -61,3 +60,4 @@ Generates a `markdown` list of warnings for the prose in a corpus of .markdown a
 `mdspell_installed?` - Determine if mdspell is currently installed in the system paths.
 
 `check_spelling` - Runs a markdown-specific spell checker, against a corpus of `.markdown` and `.md` files.
+
