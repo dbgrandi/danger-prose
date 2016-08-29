@@ -1,10 +1,10 @@
-# danger-proselint
+# danger-prose
 
-A description of danger-proselint.
+A description of danger-prose.
 
 ## Installation
 
-    $ gem install danger-proselint
+    $ gem install danger-prose
 
 ### prose
 
