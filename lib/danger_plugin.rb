@@ -26,16 +26,31 @@ module Danger
   #          prose.ignored_words = ["orta", "artsy"]
   #          prose.check_spelling
   #
+  # @example Ignore duplicate words in spell checking
+  #
+  #          prose.ignored_words = ["orta", "artsy"]
+  #          prose.ignore_duplicated_words = 3
+  #          prose.lint_files
+  #
+  #
   # @see  artsy/artsy.github.io
   # @tags blogging, blog, writing, jekyll, middleman, hugo, metalsmith, gatsby, express
   #
   class DangerProse < Plugin
-    # Allows you to disable a collection of linters from running. Doesn't work yet.
+    # Allows you to disable a collection of linters from running.
     # You can get a list of [them here](https://github.com/amperser/proselint#checks)
     # defaults to `["misc.scare_quotes", "typography.symbols"]` when it's nil.
     #
     # @return   [Array<String>]
     attr_accessor :disable_linters
+
+    # Let's you declare that if a word is classed as misspelled more than _x_ times
+    # then it should be ignored by the reporter. Defaults to nil, which is turned off.
+    # This is because common technical terms are picked up by the spell checker,
+    # and it's not worth keeping them all in the `ignored_words` array.
+    #
+    # @return   [Number]
+    attr_accessor :ignore_duplicated_words
 
     # Lints the globbed markdown files. Will fail if `proselint` cannot be installed correctly.
     # Generates a `markdown` list of warnings for the prose in a corpus of .markdown and .md files.
@@ -129,6 +144,10 @@ module Danger
 
       # Get some metadata about the local setup
       current_slug = env.ci_source.repo_slug
+
+      unless ignore_duplicated_words.nil?
+        
+      end
 
       if spell_issues.count > 0
         message = "### Spell Checker found issues\n\n"
