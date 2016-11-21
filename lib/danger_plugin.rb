@@ -185,7 +185,7 @@ module Danger
     def get_files files
       # Either use files provided, or use the modified + added
       markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
-      markdown_files.select { |line| line.end_with? '.markdown', '.md' }
+      markdown_files.select { |line| line.end_with? '.markdown', '.md', '.txt' }
     end
 
     # Always returns a hash, regardless of whether the command gives JSON, weird data, or no response
