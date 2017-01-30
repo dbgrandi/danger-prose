@@ -1,9 +1,9 @@
-require 'json'
+require "json"
 
 module Danger
   # Lint markdown files inside your projects.
-  # This is done using the [proselint](http://proselint.com) python egg.
-  # Results are passed out as a table in markdown.
+  # This happens using the [proselint](http://proselint.com) python egg.
+  # Results come out as a table in markdown.
   #
   # @example Running linter with custom disabled linters
   #
@@ -37,7 +37,7 @@ module Danger
     # @return   [Array<String>]
     attr_accessor :disable_linters
 
-    # Lints the globbed markdown files. Will fail if `proselint` cannot be installed correctly.
+    # Lints the globbed markdown files. Will fail if `proselint` does not install.
     # Generates a `markdown` list of warnings for the prose in a corpus of .markdown and .md files.
     #
     # @param   [String] files
@@ -47,7 +47,7 @@ module Danger
     #
     def lint_files(files = nil)
       # Installs a prose checker if needed
-      system 'pip install --user proselint' unless proselint_installed?
+      system "pip install --user proselint" unless proselint_installed?
 
       # Check that this is in the user's PATH after installing
       raise "proselint is not in the user's PATH, or it failed to install" unless proselint_installed?
@@ -60,7 +60,7 @@ module Danger
       with_proselint_disabled(to_disable) do
         # Convert paths to proselint results
         result_jsons = Hash[markdown_files.uniq.collect { |v| [v, get_proselint_json(v)] }]
-        proses = result_jsons.select { |_, prose| prose['data']['errors'].count }
+        proses = result_jsons.select { |_, prose| prose["data"]["errors"].count }
       end
 
       # Get some metadata about the local setup
@@ -76,7 +76,7 @@ module Danger
           message << "Line | Message | Severity |\n"
           message << "| --- | ----- | ----- |\n"
 
-          prose['data']['errors'].each do |error|
+          prose["data"]["errors"].each do |error|
             message << "#{error['line']} | #{error['message']} | #{error['severity']}\n"
           end
         end
@@ -141,7 +141,7 @@ module Danger
 
           output.lines[1..-3].each do |line|
             index_info = line.strip.split("|").first
-            index_line, index = index_info.split(":").map { |n| n.to_i }
+            index_line, index = index_info.split(":").map(&:to_i)
 
             file = File.read(path)
 
@@ -158,22 +158,23 @@ module Danger
     end
 
     private
+
     # Creates a temporary proselint settings file
     # @return  void
     #
     def with_proselint_disabled(disable_linters)
       # Create the disabled linters JSON in ~/.proselintrc
-      proselint_template = File.join(File.dirname(__FILE__), 'proselintrc')
-      proselintJSON = JSON.parse(File.read(proselint_template))
+      proselint_template = File.join(File.dirname(__FILE__), "proselintrc")
+      proselint_json = JSON.parse(File.read(proselint_template))
 
       # Disable individual linters
       disable_linters.each do |linter|
-        proselintJSON['checks'][linter] = false
+        proselint_json["checks"][linter] = false
       end
 
       # Re-save the new JSON into the home dir
-      temp_proselint_rc_path = File.join(Dir.home, '.proselintrc')
-      File.write(temp_proselint_rc_path, JSON.pretty_generate(proselintJSON))
+      temp_proselint_rc_path = File.join(Dir.home, ".proselintrc")
+      File.write(temp_proselint_rc_path, JSON.pretty_generate(proselint_json))
 
       # Run the closure
       yield
@@ -182,14 +183,14 @@ module Danger
       File.unlink temp_proselint_rc_path
     end
 
-    def get_files files
+    def get_files(files)
       # Either use files provided, or use the modified + added
       markdown_files = files ? Dir.glob(files) : (git.modified_files + git.added_files)
-      markdown_files.select { |line| line.end_with? '.markdown', '.md' }
+      markdown_files.select { |line| line.end_with? ".markdown", ".md" }
     end
 
     # Always returns a hash, regardless of whether the command gives JSON, weird data, or no response
-    def get_proselint_json path
+    def get_proselint_json(path)
       json = `proselint "#{path}" --json`.strip
       if json[0] == "{" and json[-1] == "}"
         JSON.parse json
