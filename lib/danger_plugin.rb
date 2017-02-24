@@ -55,6 +55,9 @@ module Danger
       # Either use files provided, or use the modified + added
       markdown_files = get_files files
 
+      # Make sure we don't fail when paths have spaces
+      markdown_files = markdown_files.map { |file| "\"#{file}\"" }
+
       proses = {}
       to_disable = disable_linters || ["misc.scare_quotes", "typography.symbols"]
       with_proselint_disabled(to_disable) do
