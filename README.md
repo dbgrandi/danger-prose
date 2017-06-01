@@ -40,11 +40,11 @@ prose.lint_files</pre>
 
 
 #### Attributes
-<tr>
+
 `disable_linters` - Allows you to disable a collection of linters from running. Doesn't work yet.
 You can get a list of [them here](https://github.com/amperser/proselint#checks)
 defaults to `["misc.scare_quotes", "typography.symbols"]` when it's nil.
-<tr>
+
 `ignored_words` - Allows you to add a collection of words to skip in spellchecking.
 defaults to `[""]` when it's nil.
 
