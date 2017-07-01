@@ -59,7 +59,7 @@ module Danger
       to_disable = disable_linters || ["misc.scare_quotes", "typography.symbols"]
       with_proselint_disabled(to_disable) do
         # Convert paths to proselint results
-        result_jsons = Hash[markdown_files.uniq.collect { |v| [v, get_proselint_json(v)] }.to_a]
+        result_jsons = Hash[markdown_files.to_a.uniq.collect { |v| [v, get_proselint_json(v)] }]
         proses = result_jsons.select { |_, prose| prose['data']['errors'].count > 0 }
       end
 
@@ -123,7 +123,7 @@ module Danger
 
       skip_words = ignored_words || []
       File.write(".spelling", skip_words.join("\n"))
-      result_texts = Hash[markdown_files.uniq.collect { |md| [md, `mdspell #{md} -r`.strip] }.to_a]
+      result_texts = Hash[markdown_files.to_a.uniq.collect { |md| [md, `mdspell #{md} -r`.strip] }]
       spell_issues = result_texts.select { |path, output| output.include? "spelling errors found" }
       File.unlink(".spelling")
 
