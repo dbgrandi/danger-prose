@@ -39,7 +39,7 @@ module Danger
             # The request source's PR JSON typically looks like
             # https://raw.githubusercontent.com/danger/danger/bffc246a11dac883d76fc6636319bd6c2acd58a3/spec/fixtures/pr_response.json
 
-            @prose.env.request_source.pr_json = { head: { ref: 'my_fake_branch' } }
+            @prose.env.request_source.pr_json = { "head" => { "ref" => 'my_fake_branch' } }
           end
 
           it 'handles a known JSON report from proselint' do
@@ -47,11 +47,11 @@ module Danger
             output = @prose.status_report[:markdowns].first
 
             # A title
-            expect(output).to include('Proselint found issues')
+            expect(output.message).to include('Proselint found issues')
             # A warning
-            expect(output).to include('!!! is hyperbolic. | warning')
+            expect(output.message).to include('!!! is hyperbolic. | warning')
             # A link to the file inside the fixtures dir
-            expect(output).to include('[spec/fixtures/blog_post.md](/artsy/eigen/tree/my_fake_branch/spec/fixtures/blog_post.md)')
+            expect(output.message).to include('[spec/fixtures/blog_post.md](/artsy/eigen/tree/my_fake_branch/spec/fixtures/blog_post.md)')
           end
         end
       end
@@ -82,7 +82,7 @@ module Danger
             # The request source's PR JSON typically looks like
             # https://raw.githubusercontent.com/danger/danger/bffc246a11dac883d76fc6636319bd6c2acd58a3/spec/fixtures/pr_response.json
 
-            @prose.env.request_source.pr_json = { head: { ref: 'my_fake_branch' } }
+            @prose.env.request_source.pr_json = { "head" => { "ref" => 'my_fake_branch' } }
           end
 
           it 'handles a known JSON report from mdspell' do
@@ -90,11 +90,11 @@ module Danger
             output = @prose.status_report[:markdowns].first
 
             # A title
-            expect(output).to include('Spell Checker found issues')
+            expect(output.message).to include('Spell Checker found issues')
             # A typo, in bold
-            expect(output).to include('**tpyo**')
+            expect(output.message).to include('**tpyo**')
             # A link to the file inside the fixtures dir
-            expect(output).to include('[spec/fixtures/blog_post.md](/artsy/eigen/tree/my_fake_branch/spec/fixtures/blog_post.md)')
+            expect(output.message).to include('[spec/fixtures/blog_post.md](/artsy/eigen/tree/my_fake_branch/spec/fixtures/blog_post.md)')
           end
         end
       end
