@@ -4,6 +4,8 @@ A description of danger-prose.
 
 ## Installation
 
+As a pre-requisite, danger-prose requires a node environment for spell checking and a python environment for linting. So, make sure your CI environment has support for either or both of those.
+
     $ gem install danger-prose
 
 ### prose
