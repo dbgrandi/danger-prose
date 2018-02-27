@@ -103,6 +103,18 @@ module Danger
     # defaults to `[""]` when it's nil.
     # @return [Array<String>]
     attr_accessor :ignored_words
+    
+    # Allows you to specify that you want to ignore reporting numbers
+    # as spelling errors. Defaults to `false`, switch it to `true`
+    # if you wish to ignore numbers.
+    # @return false
+    attr_accessor :ignore_numbers
+    
+    # Allows you to specify that you want to ignore acronyms as spelling
+    # errors. Defaults to `false`, switch it to `true` if you wish
+    # to ignore acronyms.
+    # @return false
+    attr_accessor :ignore_acronyms
 
     # Runs a markdown-specific spell checker, against a corpus of `.markdown` and `.md` files.
     #
@@ -121,9 +133,14 @@ module Danger
 
       markdown_files = get_files files
 
+      arguments = ["-r"]
       skip_words = ignored_words || []
+
+      arguments.push("-n") if ignore_numbers
+      arguments.push("-a") if ignore_acronyms
+
       File.write(".spelling", skip_words.join("\n"))
-      result_texts = Hash[markdown_files.to_a.uniq.collect { |md| [md, `mdspell #{md} -r`.strip] }]
+      result_texts = Hash[markdown_files.to_a.uniq.collect { |md| [md, `mdspell #{md} #{arguments.join(" ")}`.strip] }]
       spell_issues = result_texts.select { |path, output| output.include? "spelling errors found" }
       File.unlink(".spelling")
 
