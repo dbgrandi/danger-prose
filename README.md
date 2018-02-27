@@ -36,7 +36,7 @@ prose.check_spelling "_posts/*.md"</pre>
 <blockquote>Running the spell checker, with some words whitelisted
   <pre>
 prose.ignored_words = ["orta", "artsy"]
-prose.lint_files</pre>
+prose.check_spelling</pre>
 </blockquote>
 
 
@@ -50,6 +50,13 @@ defaults to `["misc.scare_quotes", "typography.symbols"]` when it's nil.
 `ignored_words` - Allows you to add a collection of words to skip in spellchecking.
 defaults to `[""]` when it's nil.
 
+`ignore_numbers` - Allows you to specify that you want to ignore reporting numbers
+as spelling errors. Defaults to `false`, switch it to `true`
+if you wish to ignore numbers.
+
+`ignore_acronyms` - Allows you to specify that you want to ignore acronyms as spelling
+errors. Defaults to `false`, switch it to `true` if you wish
+to ignore acronyms.
 
 
 #### Methods

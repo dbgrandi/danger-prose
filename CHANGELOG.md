@@ -1,3 +1,6 @@
+2.0.6
+- Addds the ability to ignore_numbers and ignore_acronyms (Cellane)
+
 2.0.5
 - Fix based on danger changing how `FileList` is implemented (dbgrandi)
 
