@@ -115,6 +115,15 @@ module Danger
     # to ignore acronyms.
     # @return false
     attr_accessor :ignore_acronyms
+    
+    # Allows you to specify dictionary language to use for spell-checking.
+    # Defaults to `en-gb`, switch to `en-us`, `en-au` or `es-es`, to
+    # override.
+    attr_accessor :language
+    
+    def language
+      @language || 'en-gb'
+    end
 
     # Runs a markdown-specific spell checker, against a corpus of `.markdown` and `.md` files.
     #
@@ -138,6 +147,7 @@ module Danger
 
       arguments.push("-n") if ignore_numbers
       arguments.push("-a") if ignore_acronyms
+      arguments.push("--#{language}")
 
       File.write(".spelling", skip_words.join("\n"))
       result_texts = Hash[markdown_files.to_a.uniq.collect { |md| [md, `mdspell #{md} #{arguments.join(" ")}`.strip] }]
