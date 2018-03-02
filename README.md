@@ -58,6 +58,9 @@ if you wish to ignore numbers.
 errors. Defaults to `false`, switch it to `true` if you wish
 to ignore acronyms.
 
+`language` - Allows you to specify dictionary language to use for spell-checking.
+Defaults to `en-gb`, switch to `en-us`, `en-au` or `es-es`, to
+override.
 
 #### Methods
 
@@ -69,4 +72,3 @@ Generates a `markdown` list of warnings for the prose in a corpus of .markdown a
 `mdspell_installed?` - Determine if mdspell is currently installed in the system paths.
 
 `check_spelling` - Runs a markdown-specific spell checker, against a corpus of `.markdown` and `.md` files.
-
