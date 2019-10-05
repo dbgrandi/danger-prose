@@ -70,8 +70,16 @@ module Danger
       if proses.count > 0
         message = "### Proselint found issues\n\n"
         proses.each do |path, prose|
-          github_loc = "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
-          message << "#### [#{path}](#{github_loc})\n\n"
+          git_loc = ""
+          if defined? @dangerfile.github
+            git_loc = "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
+          elsif defined? @dangerfile.gitlab
+            git_loc = "/#{current_slug}/tree/#{gitlab.branch_for_head}/#{path}"
+          else
+            raise "This plugin does not yet support bitbucket, would love PRs: https://github.com/dbgrandi/danger-prose/"
+          end
+
+          message << "#### [#{path}](#{git_loc})\n\n"
 
           message << "Line | Message | Severity |\n"
           message << "| --- | ----- | ----- |\n"
@@ -160,8 +168,15 @@ module Danger
       if spell_issues.count > 0
         message = "### Spell Checker found issues\n\n"
         spell_issues.each do |path, output|
-          github_loc = "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
-          message << "#### [#{path}](#{github_loc})\n\n"
+          if defined? @dangerfile.github
+            git_loc = "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
+          elsif defined? @dangerfile.gitlab
+            git_loc = "/#{current_slug}/tree/#{gitlab.branch_for_head}/#{path}"
+          else
+            raise "This plugin does not yet support bitbucket, would love PRs: https://github.com/dbgrandi/danger-prose/"
+          end
+
+          message << "#### [#{path}](#{git_loc})\n\n"
 
           message << "Line | Typo |\n"
           message << "| --- | ------ |\n"
