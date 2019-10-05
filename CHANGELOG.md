@@ -1,3 +1,6 @@
+2.0.7
+- Adds the missing GitLab support (mschmieder)
+
 2.0.6
 - Adds the ability to set the dictionary language (Cellane)
 
