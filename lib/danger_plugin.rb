@@ -168,6 +168,7 @@ module Danger
       if spell_issues.count > 0
         message = "### Spell Checker found issues\n\n"
         spell_issues.each do |path, output|
+          git_loc = ""
           if defined? @dangerfile.github
             git_loc = "/#{current_slug}/tree/#{github.branch_for_head}/#{path}"
           elsif defined? @dangerfile.gitlab
